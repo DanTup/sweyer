@@ -10,7 +10,6 @@ import 'dart:convert';
 
 import 'package:device_info/device_info.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -1103,11 +1102,6 @@ abstract class ContentControl {
         removeObsolete();
       }
     } catch (ex, stack) {
-      FirebaseCrashlytics.instance.recordError(
-        ex,
-        stack,
-        reason: 'in deleteSongs',
-      );
       ShowFunctions.instance.showToast(
         msg: staticl10n.deletionError,
       );

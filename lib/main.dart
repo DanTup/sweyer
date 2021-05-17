@@ -6,7 +6,6 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sweyer/sweyer.dart';
@@ -14,7 +13,6 @@ import 'package:sweyer/constants.dart' as Constants;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:nt4f04unds_widgets/nt4f04unds_widgets.dart';
 
 import 'routes/routes.dart';
@@ -33,10 +31,7 @@ Future<void> reportError(dynamic ex, StackTrace stack) async {
       errorDetails: buildErrorReport(ex, stack),
     );
   }
-  await FirebaseCrashlytics.instance.recordError(
-    ex,
-    stack,
-  );
+
 }
 
 Future<void> reportFlutterError(FlutterErrorDetails details) async {
@@ -45,7 +40,6 @@ Future<void> reportFlutterError(FlutterErrorDetails details) async {
       errorDetails: buildErrorReport(details.exception, details.stack),
     );
   }
-  await FirebaseCrashlytics.instance.recordFlutterError(details);
 }
 
 
@@ -88,12 +82,6 @@ Future<void> main() async {
   final WidgetsBinding binding = WidgetsFlutterBinding.ensureInitialized();
   binding.renderView.automaticSystemUiAdjustment = false;
 
-  await Firebase.initializeApp();
-  if (kDebugMode) {
-    // Force disable Crashlytics collection while doing every day development.
-    // Temporarily toggle this to true if you want to test crash reporting in your app.
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
-  }
   Isolate.current.addErrorListener(RawReceivePort((pair) async {
     final List<dynamic> errorAndStacktrace = pair;
     await reportError(errorAndStacktrace.first, errorAndStacktrace.last);

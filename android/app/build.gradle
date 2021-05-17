@@ -23,8 +23,6 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-apply plugin: 'com.google.gms.google-services'  // Google Services plugin
-apply plugin: 'com.google.firebase.crashlytics'
 
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
@@ -77,6 +75,4 @@ flutter {
 dependencies {
     implementation 'androidx.core:core:1.6.0-alpha02'
     implementation 'org.jetbrains:annotations:15.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.4.1'
-    implementation 'com.google.firebase:firebase-analytics:18.0.3'
 }

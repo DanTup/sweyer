@@ -25,9 +25,6 @@ dependencies:
   shared_preferences: ^2.0.5
   path_provider: ^2.0.1
   percent_indicator: ^3.0.1
-  firebase_core: ^1.0.3
-  firebase_crashlytics: ^2.0.0
-  firebase_analytics: ^8.0.0
   package_info: ^2.0.0
   url_launcher: ^6.0.3
   flare_flutter: ^2.0.6 # TODO: update to 3.0.0 when https://github.com/2d-inc/Flare-Flutter/issues/301 is resolved
