@@ -8,8 +8,6 @@ import 'dart:isolate';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
-import 'package:sweyer/sweyer.dart';
-import 'package:sweyer/constants.dart' as Constants;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,27 +19,13 @@ import 'routes/routes.dart';
 String buildErrorReport(dynamic ex, dynamic stack) {
   return '''
 $ex
-                      
+
 $stack''';
 }
 
-Future<void> reportError(dynamic ex, StackTrace stack) async {
-  if (await Prefs.devModeBool.get()) {
-    ShowFunctions.instance.showError(
-      errorDetails: buildErrorReport(ex, stack),
-    );
-  }
+Future<void> reportError(dynamic ex, StackTrace stack) async {}
 
-}
-
-Future<void> reportFlutterError(FlutterErrorDetails details) async {
-  if (await Prefs.devModeBool.get()) {
-    ShowFunctions.instance.showError(
-      errorDetails: buildErrorReport(details.exception, details.stack),
-    );
-  }
-}
-
+Future<void> reportFlutterError(FlutterErrorDetails details) async {}
 
 class _WidgetsBindingObserver extends WidgetsBindingObserver {
   @override
@@ -49,27 +33,27 @@ class _WidgetsBindingObserver extends WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       /// This ensures that proper UI will be applied when activity is resumed.
-      /// 
+      ///
       /// See:
       /// * https://github.com/flutter/flutter/issues/21265
       /// * https://github.com/ryanheise/audio_service/issues/662
-      /// 
+      ///
       /// [SystemUiOverlayStyle.statusBarBrightness] is only honored on iOS,
       /// so I can safely use that here.
       final lastUi = SystemUiStyleController.lastUi;
-      SystemUiStyleController.setSystemUiOverlay(SystemUiStyleController.lastUi.copyWith(
-        statusBarBrightness:
-          lastUi.statusBarBrightness == null ||
-          lastUi.statusBarBrightness == Brightness.dark
-            ? Brightness.light
-            : Brightness.dark
-      ));
+      SystemUiStyleController.setSystemUiOverlay(SystemUiStyleController.lastUi
+          .copyWith(
+              statusBarBrightness: lastUi.statusBarBrightness == null ||
+                      lastUi.statusBarBrightness == Brightness.dark
+                  ? Brightness.light
+                  : Brightness.dark));
+
       /// Defensive programming if I some time later decide to add iOS support.
-      SystemUiStyleController.setSystemUiOverlay(SystemUiStyleController.lastUi.copyWith(
-        statusBarBrightness: lastUi.statusBarBrightness == Brightness.dark
-          ? Brightness.light
-          : Brightness.dark
-      ));
+      SystemUiStyleController.setSystemUiOverlay(SystemUiStyleController.lastUi
+          .copyWith(
+              statusBarBrightness: lastUi.statusBarBrightness == Brightness.dark
+                  ? Brightness.light
+                  : Brightness.dark));
     }
   }
 }
@@ -90,11 +74,6 @@ Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
     WidgetsBinding.instance.addObserver(_WidgetsBindingObserver());
 
-    await AppLocalizations.init();
-    await ThemeControl.init();
-    ThemeControl.initSystemUi();
-    await Permissions.init();
-    await ContentControl.init();
     runApp(const App());
   }, reportError);
 }
@@ -102,81 +81,36 @@ Future<void> main() async {
 class App extends StatefulWidget {
   const App({Key key}) : super(key: key);
 
-  static NFThemeData nfThemeData = NFThemeData(
-    systemUiStyle: Constants.UiTheme.black.auto,
-    modalSystemUiStyle: Constants.UiTheme.modal.auto,
-    bottomSheetSystemUiStyle: Constants.UiTheme.bottomSheet.auto,
-  );
-
   static void rebuildAllChildren() {
     void rebuild(Element el) {
       el.markNeedsBuild();
       el.visitChildren(rebuild);
     }
-    (AppRouter.instance.navigatorKey.currentContext as Element).visitChildren(rebuild);
+
+    (AppRouter.instance.navigatorKey.currentContext as Element)
+        .visitChildren(rebuild);
   }
 
   @override
   _AppState createState() => _AppState();
 }
 
-SlidableController _playerRouteController;
-SlidableController _drawerController;
-SlidableController get playerRouteController => _playerRouteController;
-SlidableController get drawerController => _drawerController;
-
 class _AppState extends State<App> with TickerProviderStateMixin {
-
   @override
   void initState() {
     super.initState();
-    _drawerController = SlidableController(vsync: this);
-    _playerRouteController = SlidableController(
-      vsync: this,
-      springDescription: playerRouteSpringDescription,
-    );
-    NFWidgets.init(
-      navigatorKey: AppRouter.instance.navigatorKey,
-      routeObservers: [routeObserver, homeRouteObserver],
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: ThemeControl.onThemeChange,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return NFTheme(
-        data: App.nfThemeData,
-          child: MaterialApp.router(
-            // showPerformanceOverlay: true,
-            title: Constants.Config.APPLICATION_TITLE,
-            color: ThemeControl.theme.colorScheme.primary,
-            supportedLocales: Constants.Config.supportedLocales,
-            scrollBehavior: _ScrollBehavior(),
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              NFLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-            ],
-            theme: ThemeControl.theme,
-            routerDelegate: AppRouter.instance,
-            routeInformationParser: AppRouteInformationParser(),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _ScrollBehavior extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
-    return GlowingOverscrollIndicator(
-      axisDirection: axisDirection,
-      color: ThemeControl.theme.colorScheme.background,
-      child: child,
+    return MaterialApp.router(
+      localizationsDelegates: const [
+        NFLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      routerDelegate: AppRouter.instance,
+      routeInformationParser: AppRouteInformationParser(),
     );
   }
 }

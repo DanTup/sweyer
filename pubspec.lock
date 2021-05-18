@@ -42,14 +42,14 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.1"
+    version: "2.6.0"
   audio_service:
     dependency: "direct main"
     description:
       path: audio_service
       ref: "67944252c2484272562078b3168fa30f4a6f6505"
       resolved-ref: "67944252c2484272562078b3168fa30f4a6f6505"
-      url: "https://github.com/nt4f04uNd/audio_service/"
+      url: "https://github.com/nt4f04uNd/audio_service"
     source: git
     version: "0.16.2"
   audio_service_platform_interface:
@@ -334,7 +334,7 @@ packages:
       path: "."
       ref: f753a91591569acece70a9e8748745efa9faabfb
       resolved-ref: f753a91591569acece70a9e8748745efa9faabfb
-      url: "https://github.com/nt4f04uNd/fluttertoast/"
+      url: "https://github.com/nt4f04uNd/fluttertoast"
     source: git
     version: "8.0.3"
   glob:
@@ -485,7 +485,7 @@ packages:
       path: "."
       ref: "1.1.3"
       resolved-ref: "3913a198878f90566ce97f0fd7e3b878f0af8a2d"
-      url: "https://github.com/nt4f04uNd/nt4f04unds_widgets/"
+      url: "https://github.com/nt4f04uNd/nt4f04unds_widgets"
     source: git
     version: "1.1.3"
   package_config:
