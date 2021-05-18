@@ -38,7 +38,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.nt4f04und.sweyer"
+        applicationId "com.example.sweyer"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -72,7 +72,3 @@ flutter {
     source '../..'
 }
 
-dependencies {
-    implementation 'androidx.core:core:1.6.0-alpha02'
-    implementation 'org.jetbrains:annotations:15.0'
-}

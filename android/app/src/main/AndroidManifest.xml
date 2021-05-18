@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.nt4f04und.sweyer">
+    package="com.example.sweyer">
 
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
@@ -14,7 +14,7 @@
         android:requestLegacyExternalStorage="true"
         android:resizeableActivity="false">
         <activity
-            android:name="com.nt4f04und.sweyer.MainActivity"
+            android:name="com.example.sweyer.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
